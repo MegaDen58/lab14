@@ -1,52 +1,23 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 
-class Car 
+public class Program
 {
-    public string Name { get; set; }
-
-    public Car(string name)
+    public static void Main()
     {
-        Name = name;
-    }
-}
+        string ipv6 = @"(:{1,2}[0-9a-fA-F]{1,4}|[0-9a-fA-F]{1,4}:){1,7}[0-9a-fA-F]{0,4}";
+        string ipv4 = @"\b((((25[0-5])|(2[0-4]\d))|((1\d{2})|(\d{1,2})))\.){3}(((25[0-5])|(2[0-4]\d))|((1\d{2})|(\d{1,2})))\b";
 
-class Garage 
-{
-    public List<Car> cars = new List<Car>();
 
-    public Garage(params Car[] autos)
-    {
-        foreach(Car car in autos)
+        while (true)
         {
-            cars.Add(car);
-        }
-    }
-}
+            Console.WriteLine("Введите ip: ");
+            string text = Console.ReadLine();
 
-class Washer
-{
-    public void Wash(Car car)
-    {
-        Console.WriteLine($"Автомобиль {car.Name} помыт.");
-    }
-}
-
-class HelloWorld
-{
-    static void Main()
-    {
-        Garage garage = new Garage(new Car("Auto"), new Car("New Auto"));
-        Washer washer = new Washer();
-        
-        CarWasher carWasher = washer.Wash;
-
-        foreach(Car car in garage.cars)
-        {
-            carWasher(car);
+            if (Regex.IsMatch(text, ipv6)) Console.WriteLine("Это ipv6.");
+            else if (Regex.IsMatch(text, ipv4))Console.WriteLine("Это ipv4.");
+            else Console.WriteLine("Совпадений нет.");
         }
     }
 
-    delegate void CarWasher(Car car);
 }
